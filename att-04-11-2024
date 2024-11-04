@@ -1,0 +1,44 @@
+-- Inicio da 1
+create database biblioteca;
+use biblioteca;
+-- Inicio da 2
+create table autores (
+    ida int primary key,
+    nome varchar(100),
+    nacionalidade varchar(50)
+);
+create table categorias (
+    idc int primary key,
+    descricao varchar(50)
+);
+create table livros(
+	idl int primary key,
+    titulo varchar(100) not null,
+    ano_publicacao year,
+    ida INT,
+    idc INT,
+    preco decimal(5,2),
+    foreign key (ida) references autores(ida),
+    foreign key (idc) references categorias(idc)
+);
+alter table categorias add quantidade int;
+-- Inicio da 3
+insert into autores(ida,nome, nacionalidade)
+values (1,'Agatha Christie', 'Britânica'),(2,'George Orwell', 'Britânico'),(3,'Júlio Verne','Francês');
+insert into categorias(idc,descricao,quantidade)
+values(1,'Mistério',100),(2,'Distopia',200),(3,'Aventura',300);
+insert into livros(idl,titulo, ano_publicacao, ida, idc, preco)
+values(1,'Assassinato no Expresso do Oriente',1934,1,1,27.90),(2,'1984',1949,2,2,50.00),(3,'A Ilha Misteriosa',1874,3,3,30.00);
+insert into autores(ida,nome, nacionalidade)
+values(4,'Maria José do Pré','Brasileira');
+insert into livros(idl,titulo, ano_publicacao, ida, idc, preco)
+values(4,'A Ilha Perdida',1944,4,3,15.00);
+-- Inicio 4
+update categorias set descricao = 'Romance' where idc = 1;
+update livros set preco = preco * 1.1 where ano_publicacao < 2000;
+update autores set nome = 'Gabriel García Márquez' where ida = 1;
+-- Inicio 5
+delete from livros where ano_publicacao < 1950;
+delete from categorias where quantidade < 5;
+-- Inicio 6
+alter table categorias drop column quantidade;
