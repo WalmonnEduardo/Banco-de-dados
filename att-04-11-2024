@@ -1,4 +1,5 @@
 -- Inicio da 1
+drop database biblioteca;
 create database biblioteca;
 use biblioteca;
 -- Inicio da 2
@@ -27,8 +28,9 @@ insert into autores(ida,nome, nacionalidade)
 values (1,'Agatha Christie', 'Britânica'),(2,'George Orwell', 'Britânico'),(3,'Júlio Verne','Francês');
 insert into categorias(idc,descricao,quantidade)
 values(1,'Mistério',100),(2,'Distopia',200),(3,'Aventura',300);
-insert into livros(idl,titulo, ano_publicacao, ida, idc, preco)
-values(1,'Assassinato no Expresso do Oriente',1934,1,1,27.90),(2,'1984',1949,2,2,50.00),(3,'A Ilha Misteriosa',1874,3,3,30.00);
+insert into livros(idl,titulo, ano_publicacao, ida, idc, preco) values(1,'Assassinato no Expresso do Oriente',1934,1,1,27.90);
+insert into livros(idl,titulo, ano_publicacao, ida, idc, preco) values(2,'1984',1949,2,2,50.00);
+insert into livros(idl,titulo, ano_publicacao, ida, idc, preco) values(3,'A Ilha Misteriosa',1974,3,3,30.00);
 insert into autores(ida,nome, nacionalidade)
 values(4,'Maria José do Pré','Brasileira');
 insert into livros(idl,titulo, ano_publicacao, ida, idc, preco)
