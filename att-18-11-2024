@@ -1,0 +1,164 @@
+
+====================
+1)C
+====================
+2)D
+====================
+3)A
+====================
+4)A
+====================
+5)C
+====================
+6)B
+====================
+7)C
+====================
+8)B
+====================
+9)A
+====================
+10)A
+====================
+11)C
+====================
+12)A
+====================
+13)A
+====================
+14)A
+====================
+15)A
+====================
+16)A
+====================
+17)C
+====================
+18)D
+====================
+19)C
+====================
+20)A
+====================
+21)E
+====================
+22)D
+====================
+23)A
+====================
+24)D
+====================
+25)A
+====================
+-- Criar o banco de dados e usar
+CREATE DATABASE empresa;
+USE empresa;
+
+-- Criar as tabelas
+CREATE TABLE Departamentos (
+    codigo INT PRIMARY KEY,
+    nome VARCHAR(100),
+    localizacao VARCHAR(100),
+    codigofuncionariogerente INT,
+    FOREIGN KEY (codigofuncionariogerente) REFERENCES Funcionarios(codigo)
+);
+
+CREATE TABLE Funcionarios (
+    codigo INT PRIMARY KEY,
+    primeiroNome VARCHAR(50),
+    segundoNome VARCHAR(50),
+    ultimoNome VARCHAR(50),
+    dataNasci DATE,
+    cpf VARCHAR(11) UNIQUE,
+    rg VARCHAR(20),
+    endereco VARCHAR(200),
+    cep VARCHAR(10),
+    cidade VARCHAR(100),
+    fone VARCHAR(20),
+    codigodepartamento INT,
+    funcao VARCHAR(50),
+    salario DECIMAL(10, 2),
+    FOREIGN KEY (codigodepartamento) REFERENCES Departamentos(codigo)
+);
+
+-- a) Listar nome e sobrenome ordenado por sobrenome
+SELECT primeiroNome, segundoNome 
+FROM Funcionarios
+ORDER BY segundoNome;
+
+-- b) Listar todos os campos de funcionários ordenados por cidade
+SELECT * 
+FROM Funcionarios
+ORDER BY cidade;
+
+-- c) Liste os funcionários que têm salário superior a R$ 1.000,00 ordenados pelo nome completo
+SELECT primeiroNome, segundoNome, ultimoNome, salario
+FROM Funcionarios
+WHERE salario > 1000
+ORDER BY primeiroNome, segundoNome, ultimoNome;
+
+-- d) Liste a data de nascimento e o primeiro nome dos funcionários ordenados do mais novo para o mais velho
+SELECT dataNasci, primeiroNome
+FROM Funcionarios
+ORDER BY dataNasci DESC;
+
+-- e) Liste os funcionários como uma listagem telefônica
+SELECT fone, primeiroNome, segundoNome, ultimoNome
+FROM Funcionarios
+ORDER BY fone;
+
+-- f) Liste o total da folha de pagamento
+SELECT SUM(salario) AS TotalFolhaPagamento
+FROM Funcionarios;
+
+-- g) Liste o nome, o nome do departamento e a função de todos os funcionários
+SELECT f.primeiroNome, f.segundoNome, f.funcao, d.nome AS NomeDepartamento
+FROM Funcionarios f
+JOIN Departamentos d ON f.codigodepartamento = d.codigo;
+
+-- h) Liste todos departamentos com seus respectivos gerentes
+SELECT d.nome AS NomeDepartamento, f.primeiroNome AS NomeGerente
+FROM Departamentos d
+JOIN Funcionarios f ON d.codigofuncionariogerente = f.codigo;
+
+-- i) Liste o valor da folha de pagamento de cada departamento (nome)
+SELECT d.nome AS NomeDepartamento, SUM(f.salario) AS FolhaPagamento
+FROM Departamentos d
+JOIN Funcionarios f ON f.codigodepartamento = d.codigo
+GROUP BY d.nome;
+
+-- j) Liste os departamentos dos funcionários que têm a função de supervisor
+SELECT d.nome AS NomeDepartamento
+FROM Funcionarios f
+JOIN Departamentos d ON f.codigodepartamento = d.codigo
+WHERE f.funcao = 'Supervisor';
+
+-- k) Liste a quantidade de funcionários desta empresa
+SELECT COUNT(*) AS TotalFuncionarios
+FROM Funcionarios;
+
+-- l) Liste o salário médio pago pela empresa
+SELECT AVG(salario) AS SalarioMedio
+FROM Funcionarios;
+
+-- m) Liste os nomes dos funcionários que moram em Recife e que exerçam a função de Telefonista
+SELECT primeiroNome, segundoNome, ultimoNome
+FROM Funcionarios
+WHERE cidade = 'Recife' AND funcao = 'Telefonista';
+
+-- n) Liste o nome do departamento e do funcionário ordenados por departamento e funcionário
+SELECT d.nome AS NomeDepartamento, f.primeiroNome, f.segundoNome, f.ultimoNome
+FROM Departamentos d
+JOIN Funcionarios f ON f.codigodepartamento = d.codigo
+ORDER BY d.nome, f.primeiroNome, f.segundoNome;
+
+-- o) Liste o nome completo de todos os funcionários que não tenham segundo nome
+SELECT CONCAT(primeiroNome, ' ', ultimoNome) AS NomeCompleto
+FROM Funcionarios
+WHERE segundoNome IS NULL OR segundoNome = '';
+
+-- p) Liste o menor salário pago pela empresa em cada departamento
+SELECT d.nome AS NomeDepartamento, MIN(f.salario) AS MenorSalario
+FROM Departamentos d
+JOIN Funcionarios f ON f.codigodepartamento = d.codigo
+GROUP BY d.nome;
